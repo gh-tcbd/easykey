@@ -30,11 +30,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-       /* final SharedPreferences sharedPref = getSharedPreferences("me.easykey.settings", Context.MODE_PRIVATE);
-        SharedPreferences.Editor e = sharedPref.edit();
-        e.clear();
-        e.commit();*/
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -106,6 +101,15 @@ public class MainActivity extends AppCompatActivity
             Intent i = new Intent(this, LoginActivity.class);
             startActivityForResult(i, 1);
             return true;
+        } else if (id == R.id.action_log_out) {
+            SharedPreferences sp = getSharedPreferences("me.easykey.settings", Context.MODE_PRIVATE);
+            SharedPreferences.Editor e = sp.edit();
+            e.remove("APIKEY");
+            e.remove("fName");
+            e.remove("lName");
+            e.commit();
+            Toast.makeText(getApplicationContext(), "Logged Out", Toast.LENGTH_LONG).show();
+            invalidateOptionsMenu();
         }
 
         return super.onOptionsItemSelected(item);
