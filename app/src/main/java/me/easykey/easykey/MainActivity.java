@@ -1,5 +1,6 @@
 package me.easykey.easykey;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,9 +13,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+import android.content.SharedPreferences;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +28,11 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        final SharedPreferences sharedPref = getSharedPreferences("me.easykey.settings", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("Name", "Dan");
+        editor.commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -32,6 +42,20 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        NavigationView nav = (NavigationView) findViewById(R.id.nav_view);
+        Menu menu = nav.getMenu();
+        MenuItem item = menu.add(R.id.room_group, 1, 100, "Testing");
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Toast.makeText(getApplicationContext(), sharedPref.getString("Name", "[Error]"), Toast.LENGTH_LONG).show();
+                return true;
+            }
+
+        });
+        menu.setGroupVisible(R.id.room_group, true);
+
     }
 
     @Override
@@ -73,9 +97,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_settings) {
-            // Handle the camera action
-        } else if (id == R.id.nav_livingroom) {
-
+            // Handle the settings action
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
