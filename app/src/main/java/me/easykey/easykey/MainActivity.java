@@ -30,10 +30,10 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final SharedPreferences sharedPref = getSharedPreferences("me.easykey.settings", Context.MODE_PRIVATE);
+       /* final SharedPreferences sharedPref = getSharedPreferences("me.easykey.settings", Context.MODE_PRIVATE);
         SharedPreferences.Editor e = sharedPref.edit();
         e.clear();
-        e.commit();
+        e.commit();*/
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -45,22 +45,31 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-        NavigationView nav = (NavigationView) findViewById(R.id.nav_view);
-        Menu menu = nav.getMenu();
-        MenuItem item = menu.add(R.id.room_group, 1, 100, "Testing");
+        Menu menu = navigationView.getMenu();
+        menu = this.generateMenu(menu);
+        /*MenuItem item = menu.add(R.id.room_group, 0, 100, "Setting_Testing");
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Toast.makeText(getApplicationContext(), sharedPref.getString("fName", "[Error]"), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), sharedPref.getString("Name", "[Error]"), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
                 return true;
             }
 
-        });
+        });*/
         menu.setGroupVisible(R.id.room_group, true);
-
     }
-
+    public void onSettingsClick(MenuItem item){
+        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+        startActivity(intent);
+    }
+    private Menu generateMenu(Menu menu) {
+        for(int i = 1; i <= 3; i++) {
+            menu.add(R.id.room_group, Menu.NONE, i, "Testing"+i);
+        }
+        return menu;
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

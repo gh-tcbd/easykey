@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/EasyKey.iml" filepath="$PROJECT_DIR$/EasyKey.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/easykey.iml" filepath="$PROJECT_DIR$/easykey.iml" />
     </modules>
   </component>
 </project>

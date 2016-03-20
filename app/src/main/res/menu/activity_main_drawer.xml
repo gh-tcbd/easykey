@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:visible="false" android:id="@+id/room_group">
-
+    <group android:visible="false" android:id="@+id/room_group" android:orderInCategory="0">
     </group>
-    <group android:id="@+id/main_group">
+
+    <View style="@style/MenuDivider"/>
+
+    <group android:id="@+id/main_group" android:orderInCategory="500">
     <item
         android:id="@+id/nav_settings"
+        android:onClick="onSettingsClick"
         android:icon="@android:drawable/ic_menu_preferences"
-        android:title="Settings" />
+        android:title="@string/action_settings" />
     </group>
 
 </menu>

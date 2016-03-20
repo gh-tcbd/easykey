@@ -26,6 +26,10 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"></activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:parentActivityName=".MainActivity"
+            android:label="@string/title_activity_settings"></activity>
     </application>
 
 </manifest>
