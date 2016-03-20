@@ -1,6 +1,7 @@
 package me.easykey.easykey;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,10 +31,10 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         final SharedPreferences sharedPref = getSharedPreferences("me.easykey.settings", Context.MODE_PRIVATE);
+        SharedPreferences.Editor e = sharedPref.edit();
+        e.clear();
+        e.commit();
 
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("Name", "Dan");
-        editor.commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -43,13 +45,14 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
         NavigationView nav = (NavigationView) findViewById(R.id.nav_view);
         Menu menu = nav.getMenu();
         MenuItem item = menu.add(R.id.room_group, 1, 100, "Testing");
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Toast.makeText(getApplicationContext(), sharedPref.getString("Name", "[Error]"), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), sharedPref.getString("fName", "[Error]"), Toast.LENGTH_LONG).show();
                 return true;
             }
 
@@ -72,6 +75,11 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        SharedPreferences sharedPref = getSharedPreferences("me.easykey.settings", Context.MODE_PRIVATE);
+        if (sharedPref.contains("APIKEY")) {
+            menu.setGroupVisible(R.id.login_group, false);
+            menu.setGroupVisible(R.id.logout_group, true);
+        }
         return true;
     }
 
@@ -84,6 +92,10 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        } else if (id == R.id.action_sign_in) {
+            Intent i = new Intent(this, LoginActivity.class);
+            startActivityForResult(i, 1);
             return true;
         }
 
@@ -104,4 +116,25 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        SharedPreferences sharedPref = getSharedPreferences("me.easykey.settings", Context.MODE_PRIVATE);
+
+
+        if (sharedPref.contains("APIKEY")) {
+            String fName = sharedPref.getString("fName", "[Error]");
+            String lName = sharedPref.getString("lName", "[Error]");
+            String apiKey = sharedPref.getString("APIKEY", "[Error]");
+
+            Toast.makeText(getApplicationContext(), fName + " " + lName + " logged in with api key: " + apiKey, Toast.LENGTH_LONG).show();
+
+        }
+
+        invalidateOptionsMenu();
+    }
+
+
 }
