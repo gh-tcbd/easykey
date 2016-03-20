@@ -14,8 +14,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Switch;
 import android.widget.Toast;
 import android.content.SharedPreferences;
+import android.widget.ToggleButton;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -42,17 +44,7 @@ public class MainActivity extends AppCompatActivity
 
         Menu menu = navigationView.getMenu();
         menu = this.generateMenu(menu);
-        /*MenuItem item = menu.add(R.id.room_group, 0, 100, "Setting_Testing");
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                //Toast.makeText(getApplicationContext(), sharedPref.getString("Name", "[Error]"), Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                startActivity(intent);
-                return true;
-            }
 
-        });*/
         menu.setGroupVisible(R.id.room_group, true);
     }
     public void onSettingsClick(MenuItem item){
@@ -104,10 +96,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.action_log_out) {
             SharedPreferences sp = getSharedPreferences("me.easykey.settings", Context.MODE_PRIVATE);
             SharedPreferences.Editor e = sp.edit();
-            e.remove("APIKEY");
-            e.remove("fName");
-            e.remove("lName");
+            e.clear();
             e.commit();
+            resetToggles();
             Toast.makeText(getApplicationContext(), "Logged Out", Toast.LENGTH_LONG).show();
             invalidateOptionsMenu();
         }
@@ -145,8 +136,18 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(getApplicationContext(), fName + " " + lName + " logged in with api key: " + apiKey, Toast.LENGTH_LONG).show();
 
         }
-
+        resetToggles();
         invalidateOptionsMenu();
+    }
+
+    private void resetToggles() {
+        SharedPreferences sharedPref = getSharedPreferences("me.easykey.settings", Context.MODE_PRIVATE);
+        Switch toggle_awake = (Switch) findViewById(R.id.toggle_sleep);
+        Switch toggle_away = (Switch) findViewById(R.id.toggle_away);
+        Switch toggle_lockdown = (Switch) findViewById(R.id.toggle_lockdown);
+        toggle_awake.setChecked(sharedPref.getBoolean("sleep", false));
+        toggle_away.setChecked(sharedPref.getBoolean("away", false));
+        toggle_lockdown.setChecked(sharedPref.getBoolean("lockdown", false));
     }
 
 
